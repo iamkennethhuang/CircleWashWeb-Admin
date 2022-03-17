@@ -74,9 +74,9 @@ This website contains two main systems: Customer Service, Scheduling & Delivery 
 **Scenario:** An middle-aged woman with limited knowledge of technology experience could not start a washer after coins are inserted. (look for contact malfunction, the possible direction in-store) She open the Circle Wash Website and navigated to the customer support page, and choose to file a complaint as a guess by providing her email. Then she submitted the form about the problem, time, machine number, amount of money lose, and the preferred instore credit as a refund. The complaint is sent from the web app to the laundromat internal system waiting for the staff/owner to review. The staff/owner receives the complaints with the machine history query from FasCard API. Finally, the staff verified the accuracy of the complaints and contacted the customer with a refund on his FasCard.  
 
 **Use Case Diagram**
-![customer service ucd] (readmeImages/customerserviceusecase.drawio.png)
+![customer service ucd](readmeImages/customerserviceusecase.drawio.png)
 
 **ERD (Database Diagram)**
 https://drive.google.com/file/d/1iuYYxyvEE_XokSKLeg9Guhwvez9J0Pwa/view?usp=sharing
 This Entity Relationship Diagram below is designed for the administration system and customer service, it does not contain the entity and relationship for the delivery system.
-![customer service erd] (readmeImages/CircleWash.drawio.png)
+![customer service erd](readmeImages/CircleWash.drawio.png)
