@@ -107,22 +107,22 @@ This Entity Relationship Diagram below is designed for the administration system
 <a name='Sequence-Diagram'></a>
 
 # Sequence Diagram
-1. Enter Online Complaint Form
+1. **Enter Online Complaint Form**
 ![enterOnlineComplaintForm](readmeImages/enterOnline.png)
 
-2. Filing Online Complaint Form
+2. **Filing Online Complaint Form**
 ![filingOnlineComplaintForm](readmeImages/filingOnline.png)
 
-3. Administrative portal sign up & sign in
+3. **Administrative portal sign up & sign in**
 ![admin sign up and in](readmeImages/adminSignInUp.jpg)
 
-4. Administrative portal manages user role 
+4. **Administrative portal manages user role** 
 ![admin manages role](readmeImages/adminManageRole.jpg)
 
-5. Administrative portal approves pending staff
+5. **Administrative portal approves pending staff**
 ![admin approve pending staff](readmeImages/adminPending.jpg)
 
-6. Administrative portal handling case
+6. **Administrative portal handling case**
 ![admin handling case](readmeImages/adminCase.jpg)
 
 <a name='System-Diagram'></a>
@@ -135,11 +135,11 @@ This Entity Relationship Diagram below is designed for the administration system
 # Permission & Role Design
 Circle Wash web app and Circle Wash’s administration portal web app are two separate web applications, so they will have their separate role and permission. For now, there’s only one role in the Circle Wash web app, user, and there’s no permission. In the section below, I will focus on the role and permission for Circle Wash’s administration portal web application. 
 
-Role: 
+**Role:**
 - Admin
 - Support
 
-Permission:
+**Permission:**
 - Page Permission
     - Dashboard Page
     - Pending Staff Sign Up Page
