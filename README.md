@@ -137,33 +137,33 @@ This Entity Relationship Diagram below is designed for the administration system
 Circle Wash web app and Circle Wash’s administration portal web app are two separate web applications, so they will have their separate role and permission. For now, there’s only one role in the Circle Wash web app, user, and there’s no permission. In the section below, I will focus on the role and permission for Circle Wash’s administration portal web application. 
 
 Role: 
-    - Admin
-    - Support
+- Admin
+- Support
 
 Permission:
-    - Page Permission
-        - Dashboard Page
-        - Pending Staff Sign Up Page
-        - Role/Permission Management Page 
-        - Individual Report File Page  
-        - Individual Case Page (communicate with the customer)
-        - Individual Case Solution Page (create a solution for each case)
-    - Operation Permissions
-        - Approve pending staff sign up
-        - Edit staff’s role/permission 
-        - Create case solution 
-        - Create case’s finance solution
-        - Communicate with the customer through company email
-    - Date Permissions
-        - N/A
+- Page Permission
+    - Dashboard Page
+    - Pending Staff Sign Up Page
+    - Role/Permission Management Page 
+    - Individual Report File Page  
+    - Individual Case Page (communicate with the customer)
+    - Individual Case Solution Page (create a solution for each case)
+- Operation Permissions
+    - Approve pending staff sign up
+    - Edit staff’s role/permission 
+    - Create case solution 
+    - Create case’s finance solution
+    - Communicate with the customer through company email
+- Date Permissions
+    - N/A
 
 For designing the user and role, I followed the RBAC model, “which uses roles to categorize users and manages permissions for each role. (Licia Li)” I choose this design model over user group permissions, inheriting permissions because the current size of Circle Wash is small and it doesn’t have a large user base, which makes the other models an overkill for this company. However, this model does have its limitations. My RBAC model requires an admin to assign roles to each user or permission to each role, which would be hard to scale up in the future. Assuming Circle Wash grew into a larger corporation with hundreds of staff, it has multiple departments and dozens of permission for each department. Manging roles and permission individually would be come tedious and difficult.
 
 ![permission diagram](readmeImages/permissionLevel.png)
-Permission levels and types
+
 
 ![RBAC diagram](readmeImages/rbac.png)
-RBAC Model
+
 
 The diagram above is constructed with three main sections: type of user, role, and permissions. I will demonstrate each user’s role and permissions. First, the owner of the corporation has the highest authority, which he/she is assigned to the role of admin. And, the admin has all page and operation permissions. Second, the circle wash laundromat worker and delivery driver have the role of support. Support is capable of viewing the dashboard page, individual report file page, individual case solution page, and individual case page. On the individual case page, support is able to communicate with customers through the customercare@circlewash.net email. On the individual solution page, support is able to create solutions 1, 5, and 6. All the possible solution is shown below.
 
@@ -192,36 +192,36 @@ Control Panel: I choose a cyber panel for the web hosting control panel, and use
 There are two main steps in setting up the mail server. The first part is programming an application that is able to send and receive email properly or setting up the mail server with software. The second part is configuring the DNS record and registering certificates in order to for the mail server to work and increase the domain name authenticity (so the email doesn’t end in a spam folder).
 
 Step 1 (setting up mail server):
-    - Register domain name
-    - Register VPC at Linode (cloud hosting provider)
-    - Install Ubuntu 20.04 in VPC
-    - Install CyberPanel with no virtual database (The mail server is currently using a local database during the development stage)
-    - Log in to Cyberpanel admin website
+- Register domain name
+- Register VPC at Linode (cloud hosting provider)
+- Install Ubuntu 20.04 in VPC
+- Install CyberPanel with no virtual database (The mail server is currently using a local database during the development stage)
+- Log in to Cyberpanel admin website
 
 Step 2 (setting up DNA record):
-    - Create an empty website in Cyberpanel (with a subdomain of www) for creating DNS record in Cyberpanel
-    - Create two custom name server named ns1 and ns2; hosted inside of the same VPC. Cyber automatically generates all the DNA records for the mail server. The generated DNA records:
-        - Type A record for mail server public address, mail.circlewash.net, with VPC public IP as the value.
-        - Two Type A record ns1 and ns2 name servers with the same VPC public IP as the value. In the future, it would be more secure to host the name server on different IP addresses because ns2 acts as a backup server for ns1. In the current situation, both name servers would fail at the same time. 
-        - Three Cname records, one for the www.circlewash.net website, one for the www.mail.circlewash.net mail server, and an FTP Cname record for all the file transfer protocols. Cname record is used to map a subdomain to a domain host.
-        - MX record named circlewash.net with value mail.circlewash.net. The usage of this record is for providing information for the SMTP protocol on how messages should be routed between mail servers.
-        - 2 SPF records for building a good reputation, which prevents spoofing and unauthorized users from sending emails with our domain name. The email server would check the SPF record and validate the email sent IP address with the allowed host IP addresses. (type txt)
-        - 2 DKIM (Domain Key Identify Mail) record is used for checking the sender’s authentication with public and private key, which the DKIM record store a public key for the digital signature that is signed by the sender’s private key in each mail sent. CyberPanel generated the private and public keys for me. (type txt)
-        - 2 DMARC records ensure the mail is protected with SPF and dkim and instructions for the receiver mail server when email checks fail. (type txt) In our Dmarc record we set the handle method for the fail check to quarantine. 
-        - 2 domain key records that I have no idea what it is (type txt). Could be related to the DKIM record.
-        - 2 NS records for the two custom name servers
-        - SOA record that contains administrative general and status information (type soa)
-    - Register an SSL certificate for the mail server, circlewash.net
-    - Configure google domain to use the custom name server instead of the default google name server
-    - Change the reverse DNA of the public IP address to circlewash.net, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
+- Create an empty website in Cyberpanel (with a subdomain of www) for creating DNS record in Cyberpanel
+- Create two custom name server named ns1 and ns2; hosted inside of the same VPC. Cyber automatically generates all the DNA records for the mail server. The generated DNA records:
+    - Type A record for mail server public address, mail.circlewash.net, with VPC public IP as the value.
+    - Two Type A record ns1 and ns2 name servers with the same VPC public IP as the value. In the future, it would be more secure to host the name server on different IP addresses because ns2 acts as a backup server for ns1. In the current situation, both name servers would fail at the same time. 
+    - Three Cname records, one for the www.circlewash.net website, one for the www.mail.circlewash.net mail server, and an FTP Cname record for all the file transfer protocols. Cname record is used to map a subdomain to a domain host.
+    - MX record named circlewash.net with value mail.circlewash.net. The usage of this record is for providing information for the SMTP protocol on how messages should be routed between mail servers.
+    - 2 SPF records for building a good reputation, which prevents spoofing and unauthorized users from sending emails with our domain name. The email server would check the SPF record and validate the email sent IP address with the allowed host IP addresses. (type txt)
+    - 2 DKIM (Domain Key Identify Mail) record is used for checking the sender’s authentication with public and private key, which the DKIM record store a public key for the digital signature that is signed by the sender’s private key in each mail sent. CyberPanel generated the private and public keys for me. (type txt)
+    - 2 DMARC records ensure the mail is protected with SPF and dkim and instructions for the receiver mail server when email checks fail. (type txt) In our Dmarc record we set the handle method for the fail check to quarantine. 
+    - 2 domain key records that I have no idea what it is (type txt). Could be related to the DKIM record.
+    - 2 NS records for the two custom name servers
+    - SOA record that contains administrative general and status information (type soa)
+- Register an SSL certificate for the mail server, circlewash.net
+- Configure google domain to use the custom name server instead of the default google name server
+- Change the reverse DNA of the public IP address to circlewash.net, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
 
 Result:
 User with an admin account and password is able to login to cyber panel admin website to create an email address and send emails. The limit of emails sent for each account is 1000 emails per day.
 The email with circlewash.net domain is able sent to google mails spam and inbox and blocked by the iCloud mail server. I am still investigating the iCloud issue. 
 
 Problems:
-    - Still haven’t set up a list-unsubscribe header, which cause email to block or send to the spam folder
-    - Block by the iCloud mail server
+- Still haven’t set up a list-unsubscribe header, which cause email to block or send to the spam folder
+- Block by the iCloud mail server
 
 Nodejs & Email Notification:
 Based on my research there are no options for sending email notifications from Nodejs. The first option is posting a message with SMTP protocol to the company's mail server, and the mail server will route the mail to the destination email address. The second option is using an email delivery service, in which we send an HTTP request to the email delivery service, and the email delivery service will handle mail delivery. The email delivery service usually handles the mail delivery by sending an SMTP protocol to the email delivery service’s mail server or the email address mail server. I choose the second option, using an email delivery service from SendGrid. I choose SendGrid because of its additional features, such as activity log, templates, and statistic/analytics.
