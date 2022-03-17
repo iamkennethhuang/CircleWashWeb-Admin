@@ -1,8 +1,3 @@
-# Table of Contents
-
-1. Introduction
-2. Use Case
-
 <a name='Introduction'></a>
 # Introduction
 In this project, I will design a three-tier architecture web application for Circle Wash laundromat to increase customer loyalty, internal business productivity, and the operation's credibility. First, based on online reviews, customers have trouble filing complaints after business hours and experience difficulty getting a refund for machine malfunction. The website will provide fair online customer service handling customers' complaints. Increase internal business productivity; the website would offer scheduling services for picking up and dropping off laundries, eliminating staff picking up calls, and manually scheduling each laundry delivery. In addition, the scheduling service would provide an optimal delivery route for the driver to increase productivity. Lastly, the operation's policies and information are currently present to customers in posters scattered around the laundromat. A website can unify the details and communicate information clearly to the customers.
@@ -70,8 +65,18 @@ This website contains two main systems: Customer Service, Scheduling & Delivery 
         - Complaint denied = apology email + evidence
         - The complaint can’t be approved or denied = apology email + requesting more info
 
+**System:** Customer Service
 
+**Primary actor:** Circle Wash Customers (middle age, limited knowledge of tech) 
 
+**Secondary actor:** Circle Wash Staff/Owner 
 
+**Scenario:** An middle-aged woman with limited knowledge of technology experience could not start a washer after coins are inserted. (look for contact malfunction, the possible direction in-store) She open the Circle Wash Website and navigated to the customer support page, and choose to file a complaint as a guess by providing her email. Then she submitted the form about the problem, time, machine number, amount of money lose, and the preferred instore credit as a refund. The complaint is sent from the web app to the laundromat internal system waiting for the staff/owner to review. The staff/owner receives the complaints with the machine history query from FasCard API. Finally, the staff verified the accuracy of the complaints and contacted the customer with a refund on his FasCard.  
 
+**Use Case Diagram**
+![customer service ucd] (readmeImages/customerserviceusecase.drawio.png)
 
+**ERD (Database Diagram)**
+https://drive.google.com/file/d/1iuYYxyvEE_XokSKLeg9Guhwvez9J0Pwa/view?usp=sharing
+This Entity Relationship Diagram below is designed for the administration system and customer service, it does not contain the entity and relationship for the delivery system.
+![customer service erd] (readmeImages/CircleWash.drawio.png)
