@@ -80,3 +80,34 @@ This website contains two main systems: Customer Service, Scheduling & Delivery 
 https://drive.google.com/file/d/1iuYYxyvEE_XokSKLeg9Guhwvez9J0Pwa/view?usp=sharing
 This Entity Relationship Diagram below is designed for the administration system and customer service, it does not contain the entity and relationship for the delivery system.
 ![customer service erd](readmeImages/CircleWash.drawio.png)
+
+**DataTable**
+- User(_id, email, firstName, lastName, password, phone, address(name, street, city, zip))
+- ReportFile(_id, firstName, lastName, email, phone, machineType, machineNo, amount, description, payType, fasCardNum, creditCardNum, createAt, createAddress, userId)
+- fileCase(_id, status, userId, reportFileId, solutionId)
+- Email(_id, subject, information, authorEmail, recipientEmail, sentTime, senderType, senderId, fileCaseId)
+- Solution(_id, solutionType, amount, refundType, createAt, staffId)
+- Staff(_id, email, password, firstName, lastName, role)
+- PendingStaff(_id, email, password, status, firstName, lastName, approveStaffId, approveTime)
+- NotifyEmail(_id, subject, information, reportFileId, createAt)
+- Session(_id, session, expires)
+- Examine(_id, staffId, fileCaseId, examineTime, action)
+- StaffNotifyEmail(_id, notifyEmailId, staffId)
+- Role(_id, name)
+- Permission(_id, name)
+- rolePermision(_id, roleId, permissionId)
+- Acquire(_id, staffId, roleId)
+
+**Sequence Diagram**
+1. Enter Online Complaint Form
+![enterOnlineComplaintForm](readmeImages/enterOnline.png)
+2. Filing Online Complaint Form
+![filingOnlineComplaintForm](readmeImages/filingOnline.png)
+3. Administrative portal sign up & sign in
+![admin sign up and in](readmeImages/adminSignInUp.jpg)
+4. Administrative portal manages user role 
+![admin manages role](readmeImages/adminManageRole.jpg)
+5. Administrative portal approves pending staff
+![admin approve pending staff](readmeImages/adminPending.jpg)
+6. Administrative portal handling case
+![admin handling case](readmeImages/adminCase.jpg)
