@@ -1,12 +1,15 @@
 <a name='Introduction'></a>
+
 # Introduction
 In this project, I will design a three-tier architecture web application for Circle Wash laundromat to increase customer loyalty, internal business productivity, and the operation's credibility. First, based on online reviews, customers have trouble filing complaints after business hours and experience difficulty getting a refund for machine malfunction. The website will provide fair online customer service handling customers' complaints. Increase internal business productivity; the website would offer scheduling services for picking up and dropping off laundries, eliminating staff picking up calls, and manually scheduling each laundry delivery. In addition, the scheduling service would provide an optimal delivery route for the driver to increase productivity. Lastly, the operation's policies and information are currently present to customers in posters scattered around the laundromat. A website can unify the details and communicate information clearly to the customers.
 
 <a name='Use-Case'></a>
+
 # Use Case
 This website contains two main systems: Customer Service, Scheduling & Delivery System. Each system has a targeted use case demonstrated below. 
 
 <a name='Customer-Service'></a>
+
 ## Customer Service
 1. Entry point:
     - Laundromat customer who encountered machine malfunction after business hour where there’s no staff for assistance
@@ -76,12 +79,16 @@ This website contains two main systems: Customer Service, Scheduling & Delivery 
 **Use Case Diagram**
 ![customer service ucd](readmeImages/customerserviceusecase.drawio.png)
 
-**ERD (Database Diagram)**
+<a name='ERD'></a>
+
+# ERD (Database Diagram)
 https://drive.google.com/file/d/1iuYYxyvEE_XokSKLeg9Guhwvez9J0Pwa/view?usp=sharing
 This Entity Relationship Diagram below is designed for the administration system and customer service, it does not contain the entity and relationship for the delivery system.
 ![customer service erd](readmeImages/CircleWash.drawio.png)
 
-**DataTable**
+<a name='DataTable'></a>
+
+# DataTable
 - User(_id, email, firstName, lastName, password, phone, address(name, street, city, zip))
 - ReportFile(_id, firstName, lastName, email, phone, machineType, machineNo, amount, description, payType, fasCardNum, creditCardNum, createAt, createAddress, userId)
 - fileCase(_id, status, userId, reportFileId, solutionId)
@@ -98,16 +105,123 @@ This Entity Relationship Diagram below is designed for the administration system
 - rolePermision(_id, roleId, permissionId)
 - Acquire(_id, staffId, roleId)
 
-**Sequence Diagram**
+<a name='Sequence-Diagram'></a>
+
+# Sequence Diagram
 1. Enter Online Complaint Form
 ![enterOnlineComplaintForm](readmeImages/enterOnline.png)
+
 2. Filing Online Complaint Form
 ![filingOnlineComplaintForm](readmeImages/filingOnline.png)
+
 3. Administrative portal sign up & sign in
 ![admin sign up and in](readmeImages/adminSignInUp.jpg)
+
 4. Administrative portal manages user role 
 ![admin manages role](readmeImages/adminManageRole.jpg)
+
 5. Administrative portal approves pending staff
 ![admin approve pending staff](readmeImages/adminPending.jpg)
+
 6. Administrative portal handling case
 ![admin handling case](readmeImages/adminCase.jpg)
+
+<a name='System-Diagram'></a>
+
+# System Diagram
+![system diagram](readmeImages/system.png)
+
+<a name='Permission-&-Role-Design'></a>
+
+# Permission & Role Design
+Circle Wash web app and Circle Wash’s administration portal web app are two separate web applications, so they will have their separate role and permission. For now, there’s only one role in the Circle Wash web app, user, and there’s no permission. In the section below, I will focus on the role and permission for Circle Wash’s administration portal web application. 
+
+Role: 
+    - Admin
+    - Support
+
+Permission:
+    - Page Permission
+        - Dashboard Page
+        - Pending Staff Sign Up Page
+        - Role/Permission Management Page 
+        - Individual Report File Page  
+        - Individual Case Page (communicate with the customer)
+        - Individual Case Solution Page (create a solution for each case)
+    - Operation Permissions
+        - Approve pending staff sign up
+        - Edit staff’s role/permission 
+        - Create case solution 
+        - Create case’s finance solution
+        - Communicate with the customer through company email
+    - Date Permissions
+        - N/A
+
+For designing the user and role, I followed the RBAC model, “which uses roles to categorize users and manages permissions for each role. (Licia Li)” I choose this design model over user group permissions, inheriting permissions because the current size of Circle Wash is small and it doesn’t have a large user base, which makes the other models an overkill for this company. However, this model does have its limitations. My RBAC model requires an admin to assign roles to each user or permission to each role, which would be hard to scale up in the future. Assuming Circle Wash grew into a larger corporation with hundreds of staff, it has multiple departments and dozens of permission for each department. Manging roles and permission individually would be come tedious and difficult.
+
+![permission diagram](readmeImages/permissionLevel.png)
+Permission levels and types
+
+![RBAC diagram](readmeImages/rbac.png)
+RBAC Model
+
+The diagram above is constructed with three main sections: type of user, role, and permissions. I will demonstrate each user’s role and permissions. First, the owner of the corporation has the highest authority, which he/she is assigned to the role of admin. And, the admin has all page and operation permissions. Second, the circle wash laundromat worker and delivery driver have the role of support. Support is capable of viewing the dashboard page, individual report file page, individual case solution page, and individual case page. On the individual case page, support is able to communicate with customers through the customercare@circlewash.net email. On the individual solution page, support is able to create solutions 1, 5, and 6. All the possible solution is shown below.
+
+| Solution number | Solution Details | Solution Result |
+| 1 | Complaint approved + no refund | apology email |
+| 2 | Complaint approved + cash refund | apology email + cash refund |
+| 3 | Complaint approved + existing FasCard refund | apology email + FasCard credit |
+| 4 | Complaint approved + new FasCard refund | apology email + FasCard Card + FasCard credit |
+| 5 | Complaint denied | apology email + evidence |
+| 6 | Complaint can’t be approved or denied | apology email + requesting more info |
+
+<a name='SMTP-Server-Set-Up'></a>
+
+# SMTP Server Set Up
+
+## Tech stack
+Domain Name Register: I choose to use Google Domain registration for registering the domain name, circlewash.net because it’s the ease of use and competitive pricing.
+
+Server hosting provider: I choose Linode as a cloud hosting provider and share hosted a virtual private cloud because it’s less restrictive compared to aws ec2 (Aws restricted port 25 which is used for SMTP protocol in the mail server and restricted editing reverse domain name. For aws to work, I have to file multiple requests to aws to release the restriction, so I changed to Linode.)
+
+Operating System: Ubuntu 20.04
+
+Control Panel: I choose a cyber panel for the web hosting control panel, and used Cyber Panel’s Openlitespeed software as a control panel because it is capable of generating DNS records and setting up the mail server with a few instructions. 
+
+## Steps
+There are two main steps in setting up the mail server. The first part is programming an application that is able to send and receive email properly or setting up the mail server with software. The second part is configuring the DNS record and registering certificates in order to for the mail server to work and increase the domain name authenticity (so the email doesn’t end in a spam folder).
+
+Step 1 (setting up mail server):
+    - Register domain name
+    - Register VPC at Linode (cloud hosting provider)
+    - Install Ubuntu 20.04 in VPC
+    - Install CyberPanel with no virtual database (The mail server is currently using a local database during the development stage)
+    - Log in to Cyberpanel admin website
+
+Step 2 (setting up DNA record):
+    - Create an empty website in Cyberpanel (with a subdomain of www) for creating DNS record in Cyberpanel
+    - Create two custom name server named ns1 and ns2; hosted inside of the same VPC. Cyber automatically generates all the DNA records for the mail server. The generated DNA records:
+        - Type A record for mail server public address, mail.circlewash.net, with VPC public IP as the value.
+        - Two Type A record ns1 and ns2 name servers with the same VPC public IP as the value. In the future, it would be more secure to host the name server on different IP addresses because ns2 acts as a backup server for ns1. In the current situation, both name servers would fail at the same time. 
+        - Three Cname records, one for the www.circlewash.net website, one for the www.mail.circlewash.net mail server, and an FTP Cname record for all the file transfer protocols. Cname record is used to map a subdomain to a domain host.
+        - MX record named circlewash.net with value mail.circlewash.net. The usage of this record is for providing information for the SMTP protocol on how messages should be routed between mail servers.
+        - 2 SPF records for building a good reputation, which prevents spoofing and unauthorized users from sending emails with our domain name. The email server would check the SPF record and validate the email sent IP address with the allowed host IP addresses. (type txt)
+        - 2 DKIM (Domain Key Identify Mail) record is used for checking the sender’s authentication with public and private key, which the DKIM record store a public key for the digital signature that is signed by the sender’s private key in each mail sent. CyberPanel generated the private and public keys for me. (type txt)
+        - 2 DMARC records ensure the mail is protected with SPF and dkim and instructions for the receiver mail server when email checks fail. (type txt) In our Dmarc record we set the handle method for the fail check to quarantine. 
+        - 2 domain key records that I have no idea what it is (type txt). Could be related to the DKIM record.
+        - 2 NS records for the two custom name servers
+        - SOA record that contains administrative general and status information (type soa)
+    - Register an SSL certificate for the mail server, circlewash.net
+    - Configure google domain to use the custom name server instead of the default google name server
+    - Change the reverse DNA of the public IP address to circlewash.net, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
+
+Result:
+User with an admin account and password is able to login to cyber panel admin website to create an email address and send emails. The limit of emails sent for each account is 1000 emails per day.
+The email with circlewash.net domain is able sent to google mails spam and inbox and blocked by the iCloud mail server. I am still investigating the iCloud issue. 
+
+Problems:
+    - Still haven’t set up a list-unsubscribe header, which cause email to block or send to the spam folder
+    - Block by the iCloud mail server
+
+Nodejs & Email Notification:
+Based on my research there are no options for sending email notifications from Nodejs. The first option is posting a message with SMTP protocol to the company's mail server, and the mail server will route the mail to the destination email address. The second option is using an email delivery service, in which we send an HTTP request to the email delivery service, and the email delivery service will handle mail delivery. The email delivery service usually handles the mail delivery by sending an SMTP protocol to the email delivery service’s mail server or the email address mail server. I choose the second option, using an email delivery service from SendGrid. I choose SendGrid because of its additional features, such as activity log, templates, and statistic/analytics.
