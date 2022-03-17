@@ -168,6 +168,7 @@ For designing the user and role, I followed the RBAC model, “which uses roles 
 The diagram above is constructed with three main sections: type of user, role, and permissions. I will demonstrate each user’s role and permissions. First, the owner of the corporation has the highest authority, which he/she is assigned to the role of admin. And, the admin has all page and operation permissions. Second, the circle wash laundromat worker and delivery driver have the role of support. Support is capable of viewing the dashboard page, individual report file page, individual case solution page, and individual case page. On the individual case page, support is able to communicate with customers through the customercare@circlewash.net email. On the individual solution page, support is able to create solutions 1, 5, and 6. All the possible solution is shown below.
 
 | Solution number | Solution Details | Solution Result |
+| --- | --- | --- |
 | 1 | Complaint approved + no refund | apology email |
 | 2 | Complaint approved + cash refund | apology email + cash refund |
 | 3 | Complaint approved + existing FasCard refund | apology email + FasCard credit |
@@ -191,14 +192,14 @@ Control Panel: I choose a cyber panel for the web hosting control panel, and use
 ## Steps
 There are two main steps in setting up the mail server. The first part is programming an application that is able to send and receive email properly or setting up the mail server with software. The second part is configuring the DNS record and registering certificates in order to for the mail server to work and increase the domain name authenticity (so the email doesn’t end in a spam folder).
 
-Step 1 (setting up mail server):
+**Step 1 (setting up mail server):**
 - Register domain name
 - Register VPC at Linode (cloud hosting provider)
 - Install Ubuntu 20.04 in VPC
 - Install CyberPanel with no virtual database (The mail server is currently using a local database during the development stage)
 - Log in to Cyberpanel admin website
 
-Step 2 (setting up DNA record):
+**Step 2 (setting up DNA record):**
 - Create an empty website in Cyberpanel (with a subdomain of www) for creating DNS record in Cyberpanel
 - Create two custom name server named ns1 and ns2; hosted inside of the same VPC. Cyber automatically generates all the DNA records for the mail server. The generated DNA records:
     - Type A record for mail server public address, mail.circlewash.net, with VPC public IP as the value.
@@ -215,13 +216,13 @@ Step 2 (setting up DNA record):
 - Configure google domain to use the custom name server instead of the default google name server
 - Change the reverse DNA of the public IP address to circlewash.net, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
 
-Result:
+**Result:**
 User with an admin account and password is able to login to cyber panel admin website to create an email address and send emails. The limit of emails sent for each account is 1000 emails per day.
 The email with circlewash.net domain is able sent to google mails spam and inbox and blocked by the iCloud mail server. I am still investigating the iCloud issue. 
 
-Problems:
+**Problems:**
 - Still haven’t set up a list-unsubscribe header, which cause email to block or send to the spam folder
 - Block by the iCloud mail server
 
-Nodejs & Email Notification:
+**Nodejs & Email Notification:**
 Based on my research there are no options for sending email notifications from Nodejs. The first option is posting a message with SMTP protocol to the company's mail server, and the mail server will route the mail to the destination email address. The second option is using an email delivery service, in which we send an HTTP request to the email delivery service, and the email delivery service will handle mail delivery. The email delivery service usually handles the mail delivery by sending an SMTP protocol to the email delivery service’s mail server or the email address mail server. I choose the second option, using an email delivery service from SendGrid. I choose SendGrid because of its additional features, such as activity log, templates, and statistic/analytics.
