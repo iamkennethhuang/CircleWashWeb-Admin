@@ -1,7 +1,7 @@
 <a name='Introduction'></a>
 
 # Introduction
-In this project, I will design a three-tier architecture web application for Circle Wash laundromat to increase customer loyalty, internal business productivity, and the operation's credibility. First, based on online reviews, customers have trouble filing complaints after business hours and experience difficulty getting a refund for machine malfunction. The website will provide fair online customer service handling customers' complaints. Increase internal business productivity; the website would offer scheduling services for picking up and dropping off laundries, eliminating staff picking up calls, and manually scheduling each laundry delivery. In addition, the scheduling service would provide an optimal delivery route for the driver to increase productivity. Lastly, the operation's policies and information are currently present to customers in posters scattered around the laundromat. A website can unify the details and communicate information clearly to the customers.
+In this project, I will design a three-tier architecture web application for Circle Wash laundromat. First, based on online reviews, customers have trouble filing complaints after business hours and experience difficulty getting a refund for machine malfunction. The website will provide fair online customer service handling customers' complaints. Lastly, the operation's policies and information are currently present to customers in posters scattered around the laundromat. A website can unify the details and communicate information clearly to the customers.
 
 <a name='Use-Case'></a>
 
@@ -164,7 +164,7 @@ For designing the user and role, I followed the RBAC model, “which uses roles 
 ![RBAC diagram](readmeImages/rbac.png)
 
 
-The diagram above is constructed with three main sections: type of user, role, and permissions. I will demonstrate each user’s role and permissions. First, the owner of the corporation has the highest authority, which he/she is assigned to the role of admin. And, the admin has all page and operation permissions. Second, the circle wash laundromat worker and delivery driver have the role of support. Support is capable of viewing the dashboard page, individual report file page, individual case solution page, and individual case page. On the individual case page, support is able to communicate with customers through the customercare@circlewash.net email. On the individual solution page, support is able to create solutions 1, 5, and 6. All the possible solution is shown below.
+The diagram above is constructed with three main sections: type of user, role, and permissions. I will demonstrate each user’s role and permissions. First, the owner of the corporation has the highest authority, which he/she is assigned to the role of admin. And, the admin has all page and operation permissions. Second, the circle wash laundromat worker and delivery driver have the role of support. Support is capable of viewing the dashboard page, individual report file page, individual case solution page, and individual case page. On the individual case page, support is able to communicate with customers through the company email. On the individual solution page, support is able to create solutions 1, 5, and 6. All the possible solution is shown below.
 
 | Solution number | Solution Details | Solution Result |
 | --- | --- | --- |
@@ -180,7 +180,7 @@ The diagram above is constructed with three main sections: type of user, role, a
 # SMTP Server Set Up
 
 ## Tech stack
-Domain Name Register: I choose to use Google Domain registration for registering the domain name, circlewash.net because it’s the ease of use and competitive pricing.
+Domain Name Register: I choose to use Google Domain registration for registering the domain name because it’s the ease of use and competitive pricing.
 
 Server hosting provider: I choose Linode as a cloud hosting provider and share hosted a virtual private cloud because it’s less restrictive compared to aws ec2 (Aws restricted port 25 which is used for SMTP protocol in the mail server and restricted editing reverse domain name. For aws to work, I have to file multiple requests to aws to release the restriction, so I changed to Linode.)
 
@@ -201,23 +201,23 @@ There are two main steps in setting up the mail server. The first part is progra
 **Step 2 (setting up DNA record):**
 - Create an empty website in Cyberpanel (with a subdomain of www) for creating DNS record in Cyberpanel
 - Create two custom name server named ns1 and ns2; hosted inside of the same VPC. Cyber automatically generates all the DNA records for the mail server. The generated DNA records:
-    - Type A record for mail server public address, mail.circlewash.net, with VPC public IP as the value.
+    - Type A record for mail server public address with VPC public IP as the value.
     - Two Type A record ns1 and ns2 name servers with the same VPC public IP as the value. In the future, it would be more secure to host the name server on different IP addresses because ns2 acts as a backup server for ns1. In the current situation, both name servers would fail at the same time. 
-    - Three Cname records, one for the www.circlewash.net website, one for the www.mail.circlewash.net mail server, and an FTP Cname record for all the file transfer protocols. Cname record is used to map a subdomain to a domain host.
-    - MX record named circlewash.net with value mail.circlewash.net. The usage of this record is for providing information for the SMTP protocol on how messages should be routed between mail servers.
+    - Three Cname records, one for the company website, one for the mail server, and an FTP Cname record for all the file transfer protocols. Cname record is used to map a subdomain to a domain host.
+    - MX record. The usage of this record is for providing information for the SMTP protocol on how messages should be routed between mail servers.
     - 2 SPF records for building a good reputation, which prevents spoofing and unauthorized users from sending emails with our domain name. The email server would check the SPF record and validate the email sent IP address with the allowed host IP addresses. (type txt)
     - 2 DKIM (Domain Key Identify Mail) record is used for checking the sender’s authentication with public and private key, which the DKIM record store a public key for the digital signature that is signed by the sender’s private key in each mail sent. CyberPanel generated the private and public keys for me. (type txt)
     - 2 DMARC records ensure the mail is protected with SPF and dkim and instructions for the receiver mail server when email checks fail. (type txt) In our Dmarc record we set the handle method for the fail check to quarantine. 
     - 2 domain key records that I have no idea what it is (type txt). Could be related to the DKIM record.
     - 2 NS records for the two custom name servers
     - SOA record that contains administrative general and status information (type soa)
-- Register an SSL certificate for the mail server, circlewash.net
+- Register an SSL certificate for the mail server
 - Configure google domain to use the custom name server instead of the default google name server
-- Change the reverse DNA of the public IP address to circlewash.net, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
+- Change the reverse DNA of the public IP address to domain name address, because anti-spam software usually checks whether the reverse DNS matches with the email domain name
 
 **Result:**
 User with an admin account and password is able to login to cyber panel admin website to create an email address and send emails. The limit of emails sent for each account is 1000 emails per day.
-The email with circlewash.net domain is able sent to google mails spam and inbox and blocked by the iCloud mail server. I am still investigating the iCloud issue. 
+The email with companies domain is able sent to google mails spam and inbox and blocked by the iCloud mail server. I am still investigating the iCloud issue. 
 
 **Problems:**
 - Still haven’t set up a list-unsubscribe header, which cause email to block or send to the spam folder

@@ -29,7 +29,7 @@ app.use(express.json()); //casting json into js
 app.use(cors({
     origin: ["http://localhost:3000", "http://localhost:8080", "*"],
     // origin: "*", // location of the react app were connecting to
-    credentials: true 
+    // credentials: true
 }))
 
 const uri = process.env.ATLAS_URI;

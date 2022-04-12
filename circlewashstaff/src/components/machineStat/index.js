@@ -34,7 +34,7 @@ export default function MachineStat(){
     if(loggedIn === false){
         navigate('/signin');
     }
-
+    
     return(
         <Box sx={{display: 'flex'}}>
             <CssBaseline />

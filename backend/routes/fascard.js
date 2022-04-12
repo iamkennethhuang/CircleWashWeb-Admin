@@ -13,6 +13,15 @@ const apiOption = {year: 'numeric', month: 'numeric', day: 'numeric'};
 const apiOptionMonth = {year: 'numeric', month: 'numeric'};
 const {pieChartAnalyze, findAllError, lineChartAnalyze} = require('../services/analyze');
 
+function filterShit(data, target) {
+    for(let i = (data.length - 1); i > -1; i--){
+        const machDate = new Date(data[i].StatusTime).toLocaleDateString("en-US", apiOptionMonth);
+        if (machDate !== target) {data.pop();}
+        else{ break; }
+    }
+    return data;
+}
+
 router.get('/mach/history', (req, res) => {
     axios({
         method: 'post',
@@ -113,17 +122,9 @@ router.get('/pie/month/all', async (req, res) => {
                 url: `https://m.fascard.com/api/Machine/${machCode[i]}/History?Limit=1000`,
             })
             .then((machRes) => {
-                const machHistOfOneDay = machRes.data.filter(hist => {
-                    const machDate = new Date(hist.StatusTime).toLocaleDateString("en-US", apiOptionMonth);
-                    const sampleDate = new Date().toLocaleDateString("en-US", apiOptionMonth);
-                    if (machDate === sampleDate) {
-                        return true;
-                    }
-                    else{
-                        return false;
-                    }
-                })
-                const analyzeData = pieChartAnalyze (machHistOfOneDay);
+                const sampleDate = new Date().toLocaleDateString("en-US", apiOptionMonth);
+                const dataOfTheMonth = filterShit(machRes.data, sampleDate);
+                const analyzeData = pieChartAnalyze (dataOfTheMonth);
                 if(analyzeData){
                     const machineData = {
                         machineNumber: (i + 1),

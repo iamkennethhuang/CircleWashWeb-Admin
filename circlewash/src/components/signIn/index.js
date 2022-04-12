@@ -17,7 +17,8 @@ export default function SignIn(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loggedIn, setLoggedIn] = useState(false);
-    
+    // withCredentials: true,
+
     useEffect(() => {
         axios({
             method: 'get',

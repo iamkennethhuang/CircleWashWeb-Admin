@@ -7,6 +7,7 @@ const axios = require('axios');
 
 export default function ContactUs(){
     const handleClick = () => {
+        console.log('Hi')
         axios({
             method: 'post',
             data: {
